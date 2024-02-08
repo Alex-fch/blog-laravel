@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Egulias\EmailValidator\Parser\Comment;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +17,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+Route::get('/', [ArticlesController::class, 'index']);
+
+//Route::get('/{id}', [ArticlesController::class, 'show']);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('articles', ArticlesController::class)
+    ->only(['show']);
+
+Route::resource('comments', CommentsController::class)
+    ->only(['edit', 'store']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

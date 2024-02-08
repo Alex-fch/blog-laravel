@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Articles extends Model
+class Article extends Model
 {
     use HasFactory;
 
@@ -26,7 +26,7 @@ class Articles extends Model
      * The relationship between article with user
      * 
      */
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -53,7 +53,7 @@ class Articles extends Model
      * The relationship between article with comment
      * 
      */
-    public function comments(): HasMany
+    public function comment(): HasMany
     {
         return $this->hasMany(Comments::class);
     }
