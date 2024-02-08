@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articles;
+use App\Models\Article;
+use App\Models\Comments;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('articles.index', [
+            'articles' => Article::with(['user', 'comment' => function ($query) {
+                $query->with('user');
+            }])->latest()->get(),
+        ]);
     }
 
     /**
@@ -34,15 +41,15 @@ class ArticlesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Articles $articles)
+    public function show(Article $article): View
     {
-        //
+        return view('articles.show', ['article' => $article]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Articles $articles)
+    public function edit(Article $article)
     {
         //
     }
@@ -50,7 +57,7 @@ class ArticlesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Articles $articles)
+    public function update(Request $request, Article $article)
     {
         //
     }
@@ -58,7 +65,7 @@ class ArticlesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Articles $articles)
+    public function destroy(Article $article)
     {
         //
     }

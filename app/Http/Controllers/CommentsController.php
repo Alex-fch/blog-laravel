@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Comments;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class CommentsController extends Controller
 {
@@ -26,9 +29,16 @@ class CommentsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'article_id' => 'required',
+            'content' => 'required|string|max:255',
+        ]);
+
+        $request->user()->comment()->create(['content' => $validated['content'], 'article_id' => $validated['article_id']]);
+
+        return redirect(route('articles.show', ['article' => $validated['article_id']]));
     }
 
     /**
@@ -42,9 +52,9 @@ class CommentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comments $comments)
+    public function edit(Comments $comments): View
     {
-        //
+        return view('comments.edit');
     }
 
     /**

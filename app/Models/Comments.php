@@ -17,13 +17,14 @@ class Comments extends Model
      */
     protected $fillable = [
         'content',
+        'article_id',
     ];
 
     /**
      * The relationship between comment with user
      * 
      */
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -32,8 +33,8 @@ class Comments extends Model
      * The relationship between user with article
      * 
      */
-    public function articles(): BelongsTo
+    public function article(): BelongsTo
     {
-        return $this->belongsTo(Articles::class);
+        return $this->belongsTo(Article::class);
     }
 }

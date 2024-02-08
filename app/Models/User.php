@@ -48,16 +48,16 @@ class User extends Authenticatable
      * The relationship between user with article
      * 
      */
-    public function articles(): HasMany
+    public function article(): HasMany
     {
-        return $this->hasMany(Articles::class);
+        return $this->hasMany(Article::class);
     }
 
     /**
      * The relationship between user with comment
      * 
      */
-    public function comments(): HasMany
+    public function comment(): HasMany
     {
         return $this->hasMany(Comments::class);
     }
