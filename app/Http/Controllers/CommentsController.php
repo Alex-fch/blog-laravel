@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\Comments;
+use App\Models\Comment;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -44,7 +44,7 @@ class CommentsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comments $comments)
+    public function show(Comment $comments)
     {
         //
     }
@@ -52,24 +52,43 @@ class CommentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comments $comments): View
+    public function edit(Comment $comment, Article $article): View
     {
-        return view('comments.edit');
+        return view('comments.edit', [
+            'comment' => $comment,
+            'article' => $article,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comments $comments)
+    public function update(Request $request, Comment $comment, Article $article): RedirectResponse
     {
-        //
+        $this->authorize('update', $comment);
+
+        $validated = $request->validate([
+            'content' => 'required|string|max:255',
+        ]);
+
+        $article = $comment->article;
+
+        $comment->update($validated);
+
+        return redirect(route('articles.show', ['article' => $article]),);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comments $comments)
+    public function destroy(Comment $comment, Article $article): RedirectResponse
     {
-        //
+        $this->authorize('delete', $comment);
+
+        $article = $comment->article;
+
+        $comment->delete();
+
+        return redirect(route('articles.show', ['article' => $article]));
     }
 }
