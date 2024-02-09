@@ -20,6 +20,8 @@ class Article extends Model
     protected $fillable = [
         'title',
         'content',
+        'draft',
+        'is_approved',
     ];
 
     /**
@@ -35,18 +37,18 @@ class Article extends Model
      * The relationship betwwen article with categories
      * 
      */
-    public function categories(): BelongsToMany
+    public function category(): BelongsToMany
     {
-        return $this->belongsToMany(Categories::class);
+        return $this->belongsToMany(Category::class);
     }
 
     /**
      * The relationship between article with tag
      * 
      */
-    public function tags(): BelongsToMany
+    public function tag(): BelongsToMany
     {
-        return $this->belongsToMany(Tags::class);
+        return $this->belongsToMany(Tag::class);
     }
 
     /**
@@ -55,6 +57,6 @@ class Article extends Model
      */
     public function comment(): HasMany
     {
-        return $this->hasMany(Comments::class);
+        return $this->hasMany(Comment::class);
     }
 }

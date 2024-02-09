@@ -1,6 +1,18 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto p-6 lg:p-8">
         <div class="mt-16">
+            @if ($article->user->is(auth()->user()))
+            <div class="flex mb-4">
+                <a href="{{ route('article.edit', $article) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Modifier</a>
+                <form method="POST" action="{{ route('article.destroy', $article) }}">
+                    @csrf
+                    @method('delete')
+                    <x-primary-button class="ml-4 text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        {{ __('Supprimer') }}
+                    </x-primary-button>
+                </form>
+            </div>
+            @endif
             <div class="grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8">
                 <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
                     <div>
@@ -48,8 +60,15 @@
                                     </x-slot>
                                     <x-slot name="content">
                                         <x-dropdown-link :href="route('comments.edit', $comment)">
-                                            Edit
+                                            {{ __('Modifier') }}                                        
                                         </x-dropdown-link>
+                                        <form method="POST" action="{{ route('comments.destroy', $comment) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <x-dropdown-link :href="route('comments.destroy', $comment)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                {{ __('Supprimer') }}
+                                            </x-dropdown-link>
+                                        </form>
                                     </x-slot>
                                 </x-dropdown>
                                 @endif
@@ -68,16 +87,27 @@
             </div>
         </div>
         @endforeach
-        @if(Auth::user())
         <div class="mt-4">
             <form method="POST" action="{{ route('comments.store') }}">
                 @csrf
-                <input type="hidden" name="article_id" value="{{ $article->id }}">
-                <textarea name="content" placeholder="{{ __('Partage ton avis !') }}" class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('message') }}</textarea>
-                <x-input-error :messages="$errors->get('message')" class="mt-2" />
-                <x-primary-button class="mt-4">{{ __('Publier') }}</x-primary-button>
+                <div class=" grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8">
+                    <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+                        <div class="w-full">
+                            <div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex justify-between items-center">
+                                        <h2 class="ml-2 text-xl font-semibold text-gray-900 dark:text-white">Commentaire :</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea name="content" placeholder="{{ __('Commentaire...') }}" class="mt-4 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('Commentaire') }}</textarea>
+                            <input type="hidden" name="article_id" value="{{$article->id}}" />
+                            <x-primary-button class="mt-4" name="draft" value="0">
+                                {{ __('Publier') }}
+                            </x-primary-button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
-        @endif
-
 </x-app-layout>

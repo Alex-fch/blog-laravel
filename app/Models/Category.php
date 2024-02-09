@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Tags extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -20,10 +20,10 @@ class Tags extends Model
     ];
 
     /**
-     * The relationship between tag with article
+     * The relationship between categories with article
      * 
      */
-    public function articles(): BelongsToMany
+    public function article(): BelongsToMany
     {
         return $this->belongsToMany(Article::class);
     }

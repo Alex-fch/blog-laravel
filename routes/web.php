@@ -5,6 +5,8 @@ use Egulias\EmailValidator\Parser\Comment;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\HomeController;
+use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,20 +23,22 @@ use App\Http\Controllers\CommentsController;
     return view('welcome');
 });*/
 
-Route::get('/', [ArticlesController::class, 'index']);
-
-//Route::get('/{id}', [ArticlesController::class, 'show']);
-
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('articles', ArticlesController::class)
-    ->only(['show']);
+    ->only(['show', 'store']);
+
+Route::resource('article', ArticlesController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware(['auth']);
 
 Route::resource('comments', CommentsController::class)
-    ->only(['edit', 'store']);
+    ->only(['edit', 'store', 'update', 'destroy'])
+    ->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

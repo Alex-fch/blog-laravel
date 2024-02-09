@@ -15,9 +15,19 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('home.index')" :active="request()->routeIs('home.index')">
+                        {{ __('Accueil') }}
+                    </x-nav-link>
+                    @if(Auth::user())
+                    <x-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
+                        {{ __('Mes articles') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('article.create')" :active="request()->routeIs('article.create')">
+                        {{ __('Nouvel article') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             @if(Auth::user())
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -70,6 +80,12 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
+                {{ __('Mes articles') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('article.create')" :active="request()->routeIs('article.create')">
+                {{ __('Nouvel article') }}
             </x-responsive-nav-link>
         </div>
 
